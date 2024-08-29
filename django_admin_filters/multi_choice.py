@@ -94,7 +94,12 @@ class FilterExt(BaseFilterSimple, Choices):
             return queryset
 
         filters = {i[0]: i[2] for i in self.options}
-        qflt = filters[self.selected[0]]
+
+        try:
+            qflt = filters[self.selected[0]]
+        except KeyError:
+            return queryset.none()
+
         for item in self.selected[1:]:
             qflt |= filters[item]
 
