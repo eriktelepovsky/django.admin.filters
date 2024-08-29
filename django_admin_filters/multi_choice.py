@@ -90,10 +90,10 @@ class FilterExt(BaseFilterSimple, Choices):
 
     def queryset(self, request, queryset):
         """Return the filtered by selected options queryset."""
-        if not self.selected:
-            return queryset
-
         filters = {i[0]: i[2] for i in self.options}
+
+        if not self.selected or self.selected == [''] and '' not in filters.keys():
+            return queryset
 
         try:
             qflt = filters[self.selected[0]]
